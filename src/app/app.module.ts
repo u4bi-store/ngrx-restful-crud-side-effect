@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { todosReducer } from './providers/todos/reducers/todos.reducer';
 import { TodosEffects } from './providers/todos/effects/todos.effects';
@@ -24,7 +25,10 @@ import { TodosComponent } from './pages/todos/todos.component';
     StoreModule.forRoot({
       todos : todosReducer
     }),
-    EffectsModule.forRoot([TodosEffects])
+    EffectsModule.forRoot([TodosEffects]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25
+    })
   ],
   providers: [TodosService],
   bootstrap: [AppComponent]
