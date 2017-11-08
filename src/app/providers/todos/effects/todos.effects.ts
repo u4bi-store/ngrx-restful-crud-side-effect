@@ -1,8 +1,34 @@
 import { Injectable } from '@angular/core';
+import { Actions, Effect } from "@ngrx/effects";
+import { Observable } from "rxjs";
+
+import * as TdosActions from '../actions/todos.actions';
+import { TodosService } from "../todos.service";
 
 @Injectable()
 export class TodosEffects {
 
-  constructor() { }
+	constructor( private actions$ : Actions, private todosService : TodosService ) {
+
+	}
+
+	@Effect() getTodos$ = this.actions$
+		.ofType(TdosActions.GET_TODOS)
+			.switchMap(action =>
+				this.todosService.getTodos()
+					.map(todos => (
+						{
+							type : TdosActions.GET_TODOS_SUCCESS,
+							payload : todos
+						}
+					)
+				)
+				.catch(() => Observable.of(
+					{
+						type : TdosActions.GET_TODOS_ERROR
+					}
+				)
+			)
+		);
 
 }

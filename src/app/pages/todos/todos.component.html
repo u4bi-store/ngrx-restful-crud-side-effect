@@ -1,3 +1,7 @@
-<p>
-  todos works!
-</p>
+<p *ngIf="todos.pending">loading...</p>
+
+<app-todo [todo]="todo"
+    *ngFor="let todo of todos.data">
+</app-todo>
+
+<p *ngIf="todos.error">{{todos.error}}</p>
