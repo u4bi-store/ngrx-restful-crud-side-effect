@@ -2,7 +2,10 @@ import { Component } from '@angular/core';
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 
-import { getTodos } from './providers/todos/reducers/todos.reducer';
+import * as TodosActions from './providers/todos/actions/todos.actions';
+
+import { getTodos, addTodo } from './providers/todos/reducers/todos.reducer';
+import { TodosEffects } from './providers/todos/effects/todos.effects';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +15,18 @@ import { getTodos } from './providers/todos/reducers/todos.reducer';
 export class AppComponent {
 
   todos : Observable<any>;
+  addTodoSuccess$ : Observable<any>;  
 
-  constructor(private store : Store<any>) {
+  constructor(private store : Store<any>, private todosEffects : TodosEffects) {
       this.store.dispatch(getTodos());
       this.todos = store.select("todos");
+      
+      this.addTodoSuccess$ = this.todosEffects.addTodo$.filter(( { type } ) => type === TodosActions.ADD_TODO_SUCCESS);
 
   }
+
+  addTodo( todo ) {
+    this.store.dispatch(addTodo(todo));
+  }
+
 }

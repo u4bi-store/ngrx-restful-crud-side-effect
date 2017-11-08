@@ -31,4 +31,22 @@ export class TodosEffects {
 			)
 		);
 
+	@Effect() addTodo$ = this.actions$
+	.ofType(TdosActions.ADD_TODO)
+		.switchMap(action =>
+			this.todosService.addTodo(action)
+				.map(todo => (
+					{
+						type : TdosActions.ADD_TODO_SUCCESS,
+						payload: todo
+					}
+				))
+				.catch(() => Observable.of(
+					{
+						type : TdosActions.ADD_TODO_ERROR
+					}
+				)
+			)
+		);
+
 }

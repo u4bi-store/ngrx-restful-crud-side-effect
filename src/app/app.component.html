@@ -1,1 +1,3 @@
 <app-todos [todos]="todos | async"></app-todos>
+
+<app-add-todo (add)="addTodo($event)" [reset]="addTodoSuccess$ | async"></app-add-todo>
