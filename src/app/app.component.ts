@@ -4,6 +4,8 @@ import { Observable } from "rxjs";
 
 import * as TodosActions from './providers/todos/actions/todos.actions';
 
+import { setVisibilityFilter } from './providers/visibility-filter/reducers/visibility-filter.reducer';
+
 import { getTodos, addTodo, toggleTodo } from './providers/todos/reducers/todos.reducer';
 import { TodosEffects } from './providers/todos/effects/todos.effects';
 
@@ -14,6 +16,13 @@ import { TodosEffects } from './providers/todos/effects/todos.effects';
 })
 export class AppComponent {
 
+  filters = [
+      { id: 'SHOW_ALL', title: 'All'},
+      { id: 'SHOW_COMPLETED', title: 'Completed'},
+      { id: 'SHOW_ACTIVE', title: 'Active'}
+  ];
+
+  activeFilter : Observable<any>;
   todos : Observable<any>;
   addTodoSuccess$ : Observable<any>;  
 
@@ -22,7 +31,7 @@ export class AppComponent {
       this.todos = store.select("todos");
       
       this.addTodoSuccess$ = this.todosEffects.addTodo$.filter(( { type } ) => type === TodosActions.ADD_TODO_SUCCESS);
-
+      this.activeFilter = store.select('visibilityFilter').take(1);
   }
 
   addTodo(todo) {
@@ -31,6 +40,11 @@ export class AppComponent {
 
   toggle(todo) {
     this.store.dispatch(toggleTodo(todo));
+  }
+  
+  changeFilter( filter ) {
+    this.store.dispatch(setVisibilityFilter(filter));
+    this.store.dispatch(getTodos());
   }
 
 }

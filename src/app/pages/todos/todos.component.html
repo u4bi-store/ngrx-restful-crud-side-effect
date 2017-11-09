@@ -1,11 +1,3 @@
-<app-filters
-    [filters]="filters"
-    [active]="activeFilter | async"
-    (changeFilter)="changeFilter($event)">
-</app-filters>
-
-<br>
-
 <p *ngIf="todos.pending">loading...</p>
 
 <app-todo
