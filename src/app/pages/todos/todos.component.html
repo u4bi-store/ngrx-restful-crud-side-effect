@@ -4,6 +4,7 @@
     [todo]="todo"
     *ngFor="let todo of todos.data"
     (toggle)="toggle.next($event)"
+    (del)="del.next($event)"
 >
 </app-todo>
 

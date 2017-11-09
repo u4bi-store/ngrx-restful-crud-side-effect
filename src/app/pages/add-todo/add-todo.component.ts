@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -14,11 +14,12 @@ export class AddTodoComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    
   }
 
-  @Input()
-  public set reset( action ) {
-    action && this.control.reset();
+  send(){
+    this.add.next(this.control.value);
+    this.control.reset();
   }
 
 }

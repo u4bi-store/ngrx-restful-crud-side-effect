@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
 import { Observable } from 'rxjs';
 
-import * as TdosActions from '../actions/todos.actions';
+import * as TodosActions from '../actions/todos.actions';
 import { TodosService } from '../todos.service';
 
 @Injectable()
@@ -14,41 +14,70 @@ export class TodosEffects {
 	}
 
 	@Effect() getTodos$ = this.actions$
-		.ofType(TdosActions.GET_TODOS)
+		.ofType(TodosActions.GET_TODOS)
 		.withLatestFrom(this.store.select('visibilityFilter'), ( action, filter ) => filter)		
 			.switchMap(filter =>
 				this.todosService.getTodos(filter)
 					.map(todos => (
 						{
-							type : TdosActions.GET_TODOS_SUCCESS,
+							type : TodosActions.GET_TODOS_SUCCESS,
 							payload : todos
 						}
 					)
 				)
 				.catch(() => Observable.of(
 					{
-						type : TdosActions.GET_TODOS_ERROR
+						type : TodosActions.GET_TODOS_ERROR
 					}
 				)
 			)
 		);
 
 	@Effect() addTodo$ = this.actions$
-	.ofType(TdosActions.ADD_TODO)
-		.switchMap(action =>
-			this.todosService.addTodo(action)
+	.ofType(TodosActions.ADD_TODO)
+		.switchMap(action => this.todosService.addTodo(action)
+			.map(todo => (
+				{
+					type : TodosActions.ADD_TODO_SUCCESS,
+					payload: todo
+				}
+			))
+			.catch(() => Observable.of(
+				{
+					type : TodosActions.ADD_TODO_ERROR
+				}
+			))
+		);
+
+	@Effect() toggleTodo$ = this.actions$
+	.ofType(TodosActions.TOGGLE_TODO)
+		.switchMap(action => this.todosService.toggleTodo(action)
+			.map(todo => (
+				{
+					type : TodosActions.TOGGLE_TODO_SUCCESS,
+					payload: todo
+				}
+			))
+			.catch(() => Observable.of(
+				{
+					type : TodosActions.TOGGLE_TODO_ERROR
+				}
+			))
+		);
+
+	@Effect() deleteTodo$ = this.actions$
+		.ofType(TodosActions.DELETE_TODO)
+			.switchMap(action => this.todosService.deleteTodo(action)
 				.map(todo => (
 					{
-						type : TdosActions.ADD_TODO_SUCCESS,
+						type : TodosActions.DELETE_TODO_SUCCESS,
 						payload: todo
 					}
 				))
 				.catch(() => Observable.of(
 					{
-						type : TdosActions.ADD_TODO_ERROR
+						type : TodosActions.DELETE_TODO_ERROR
 					}
-				)
-			)
-		);
-
+				))
+			);
 }

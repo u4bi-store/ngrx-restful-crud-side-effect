@@ -1,4 +1,4 @@
-import { Component Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -11,5 +11,6 @@ export class TodosComponent {
 
     @Input('todos') todos;
     @Output() toggle = new EventEmitter<any>();
-
+    @Output() del = new EventEmitter<any>();
+    
 }

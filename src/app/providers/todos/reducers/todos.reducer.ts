@@ -21,7 +21,7 @@ export function todosReducer( state = initialState, { type, payload } ) {
                 data: [...state.data, payload]
             });
         /* update */
-        case TodosActions.TOGGLE_TODO:
+        case TodosActions.TOGGLE_TODO_SUCCESS:
             return Object.assign({}, state, {
                 data: state.data.map(todo => {
                     if( todo.id === payload.id ) return Object.assign({}, todo, {
@@ -31,8 +31,13 @@ export function todosReducer( state = initialState, { type, payload } ) {
                     return todo;
                 })
             })
+        /* delete */
+        case TodosActions.DELETE_TODO_SUCCESS:
+            return Object.assign({}, state, {
+                data: state.data.filter(item => item.id !== payload.id)
+            })            
         default:
-          return state;
+            return state;
     }
 
 }
@@ -47,7 +52,7 @@ export function addTodo( title ) {
     return {
         type: TodosActions.ADD_TODO,
         payload: {
-            title,
+            title
         }
     }
 }
@@ -58,4 +63,12 @@ export function toggleTodo( todo ) {
       payload: todo
     }
   }
-  
+
+export function deleteTodo( id ) {
+    return {
+      type: TodosActions.DELETE_TODO,
+      payload: {
+          id
+      }
+    }
+  }

@@ -6,8 +6,7 @@ import * as TodosActions from './providers/todos/actions/todos.actions';
 
 import { setVisibilityFilter } from './providers/visibility-filter/reducers/visibility-filter.reducer';
 
-import { getTodos, addTodo, toggleTodo } from './providers/todos/reducers/todos.reducer';
-import { TodosEffects } from './providers/todos/effects/todos.effects';
+import * as TodosReducers from './providers/todos/reducers/todos.reducer';
 
 @Component({
   selector: 'app-root',
@@ -24,27 +23,29 @@ export class AppComponent {
 
   activeFilter : Observable<any>;
   todos : Observable<any>;
-  addTodoSuccess$ : Observable<any>;  
+  addTodoSuccess$ : Observable<any>;
 
-  constructor(private store : Store<any>, private todosEffects : TodosEffects) {
-      this.store.dispatch(getTodos());
+  constructor(private store : Store<any>) {
+      this.store.dispatch(TodosReducers.getTodos());
       this.todos = store.select("todos");
-      
-      this.addTodoSuccess$ = this.todosEffects.addTodo$.filter(( { type } ) => type === TodosActions.ADD_TODO_SUCCESS);
       this.activeFilter = store.select('visibilityFilter').take(1);
   }
 
   addTodo(todo) {
-    this.store.dispatch(addTodo(todo));
+    this.store.dispatch(TodosReducers.addTodo(todo));
   }
 
   toggle(todo) {
-    this.store.dispatch(toggleTodo(todo));
+    this.store.dispatch(TodosReducers.toggleTodo(todo));
+  }
+
+  deleteTodo(id) {
+    this.store.dispatch(TodosReducers.deleteTodo(id));
   }
   
   changeFilter( filter ) {
     this.store.dispatch(setVisibilityFilter(filter));
-    this.store.dispatch(getTodos());
+    this.store.dispatch(TodosReducers.getTodos());
   }
 
 }

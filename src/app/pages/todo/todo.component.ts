@@ -9,5 +9,6 @@ export class TodoComponent {
 
   @Input('todo') todo;
   @Output() toggle = new EventEmitter<any>();
+  @Output() del = new EventEmitter<any>();
 
 }
