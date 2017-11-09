@@ -6,32 +6,32 @@ export class TodosService {
 
     constructor() { }
 
-    getTodos(){
+    getTodos(filter){
 
         const todos = [
             {
                 id: 1,
-                title: "todo 1",
+                title: 'todo 1',
                 completed: false
             },
             {
                 id: 2,
-                title: "todo 2",
+                title: 'todo 2',
                 completed: false
             },
             {
                 id: 3,
-                title: "todo 3",
+                title: 'todo 3',
                 completed: false
             },
             {
                 id: 4,
-                title: "todo 4",
-                completed: false
+                title: 'todo 4',
+                completed: true
             }
         ];
         
-        return Observable.timer(1000).mapTo(todos);
+        return Observable.timer(100).mapTo(this.getVisibleTodos(todos, filter));
     }
 
     addTodo(action) {
@@ -44,4 +44,15 @@ export class TodosService {
             });
     }
 
+    getVisibleTodos(todos, filter) {
+        switch(filter){
+            case 'SHOW_ALL': 
+                return todos;
+            case 'SHOW_COMPLETED': 
+                return todos.filter(t => t.completed);
+            default :
+                return todos.filter(t => !t.completed);
+        }
+    }
+        
 }

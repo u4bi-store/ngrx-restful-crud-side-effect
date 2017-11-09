@@ -1,21 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect } from "@ngrx/effects";
-import { Observable } from "rxjs";
+import { Store } from '@ngrx/store';
+import { Actions, Effect } from '@ngrx/effects';
+import { Observable } from 'rxjs';
 
 import * as TdosActions from '../actions/todos.actions';
-import { TodosService } from "../todos.service";
+import { TodosService } from '../todos.service';
 
 @Injectable()
 export class TodosEffects {
 
-	constructor( private actions$ : Actions, private todosService : TodosService ) {
+	constructor( private actions$ : Actions, private todosService : TodosService, private store : Store<any> ) {
 
 	}
 
 	@Effect() getTodos$ = this.actions$
 		.ofType(TdosActions.GET_TODOS)
-			.switchMap(action =>
-				this.todosService.getTodos()
+		.withLatestFrom(this.store.select('visibilityFilter'), ( action, filter ) => filter)		
+			.switchMap(filter =>
+				this.todosService.getTodos(filter)
 					.map(todos => (
 						{
 							type : TdosActions.GET_TODOS_SUCCESS,
