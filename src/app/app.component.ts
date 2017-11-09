@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 
 import * as TodosActions from './providers/todos/actions/todos.actions';
 
-import { getTodos, addTodo } from './providers/todos/reducers/todos.reducer';
+import { getTodos, addTodo, toggleTodo } from './providers/todos/reducers/todos.reducer';
 import { TodosEffects } from './providers/todos/effects/todos.effects';
 
 @Component({
@@ -25,8 +25,12 @@ export class AppComponent {
 
   }
 
-  addTodo( todo ) {
+  addTodo(todo) {
     this.store.dispatch(addTodo(todo));
+  }
+
+  toggle(todo) {
+    this.store.dispatch(toggleTodo(todo));
   }
 
 }

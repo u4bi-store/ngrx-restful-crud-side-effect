@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -23,6 +23,7 @@ export class TodosComponent implements OnInit {
     activeFilter : Observable<any>;
 
     @Input('todos') todos;
+    @Output() toggle = new EventEmitter<any>();    
 
     constructor(private store : Store<any>, private todosEffects : TodosEffects) {
         this.activeFilter = store.select('visibilityFilter').take(1);

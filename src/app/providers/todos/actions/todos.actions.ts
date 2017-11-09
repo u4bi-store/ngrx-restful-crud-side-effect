@@ -5,3 +5,5 @@ export const GET_TODOS_ERROR = "GET_TODOS_ERROR";
 export const ADD_TODO = "ADD_TODO";
 export const ADD_TODO_SUCCESS = "ADD_TODO_SUCCESS";
 export const ADD_TODO_ERROR = "ADD_TODO_ERROR";
+
+export const TOGGLE_TODO = "TOGGLE_TODO";

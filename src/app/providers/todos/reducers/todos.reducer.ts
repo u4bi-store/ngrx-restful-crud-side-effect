@@ -1,11 +1,5 @@
 import * as TodosActions from '../actions/todos.actions';
 
-export function getTodos() {
-    return {
-        type: TodosActions.GET_TODOS
-    }
-}
-
 const initialState = {
     data: [],
     pending: false,
@@ -26,10 +20,27 @@ export function todosReducer( state = initialState, { type, payload } ) {
             return Object.assign({}, state, {
                 data: [...state.data, payload]
             });
+        /* update */
+        case TodosActions.TOGGLE_TODO:
+            return Object.assign({}, state, {
+                data: state.data.map(todo => {
+                    if( todo.id === payload.id ) return Object.assign({}, todo, {
+                        completed: !todo.completed
+                    });
+                    
+                    return todo;
+                })
+            })
         default:
           return state;
     }
 
+}
+
+export function getTodos() {
+    return {
+        type: TodosActions.GET_TODOS
+    }
 }
 
 export function addTodo( title ) {
@@ -40,3 +51,11 @@ export function addTodo( title ) {
         }
     }
 }
+
+export function toggleTodo( todo ) {
+    return {
+      type: TodosActions.TOGGLE_TODO,
+      payload: todo
+    }
+  }
+  

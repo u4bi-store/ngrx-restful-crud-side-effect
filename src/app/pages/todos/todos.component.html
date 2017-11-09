@@ -8,8 +8,11 @@
 
 <p *ngIf="todos.pending">loading...</p>
 
-<app-todo [todo]="todo"
-    *ngFor="let todo of todos.data">
+<app-todo
+    [todo]="todo"
+    *ngFor="let todo of todos.data"
+    (toggle)="toggle.next($event)"
+>
 </app-todo>
 
 <p *ngIf="todos.error">{{todos.error}}</p>
